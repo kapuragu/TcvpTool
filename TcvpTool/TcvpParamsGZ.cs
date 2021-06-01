@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
@@ -27,6 +28,7 @@ namespace TcvpTool
             F = reader.ReadByte();
             G = reader.ReadByte();
             H = reader.ReadByte();
+            Console.WriteLine($"Read Params: {A} {B} {C} {D} {E} {F} {G} {H}");
         }
 
         public virtual void Write(BinaryWriter writer)
@@ -39,6 +41,7 @@ namespace TcvpTool
             writer.Write(F);
             writer.Write(G);
             writer.Write(H);
+            Console.WriteLine($"Write Params: {A} {B} {C} {D} {E} {F} {G} {H}");
         }
 
         public virtual void ReadXml(XmlReader reader)
@@ -51,6 +54,7 @@ namespace TcvpTool
             F = byte.Parse(reader["f"]);
             G = byte.Parse(reader["g"]);
             H = byte.Parse(reader["h"]);
+            Console.WriteLine($"Read XML Params: {A} {B} {C} {D} {E} {F} {G} {H}");
         }
 
         public virtual void WriteXml(XmlWriter writer)
@@ -63,6 +67,7 @@ namespace TcvpTool
             writer.WriteAttributeString("f", F.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("g", G.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("h", H.ToString(CultureInfo.InvariantCulture));
+            Console.WriteLine($"Write XML Params: {A} {B} {C} {D} {E} {F} {G} {H}");
         }
 
         public XmlSchema GetSchema()

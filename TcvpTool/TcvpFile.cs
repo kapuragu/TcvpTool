@@ -16,7 +16,7 @@ namespace TcvpTool
     public class TcvpFile : IXmlSerializable
     {
         public Version version;
-        public List<ILocatorTcvpGZ> Locators = new List<ILocatorTcvpGZ>();
+        public List<ILocatorTcvp> Locators = new List<ILocatorTcvp>();
 
         /// <summary>
         /// Reads and populates data from a binary lba file.
@@ -30,24 +30,31 @@ namespace TcvpTool
                 throw new ArgumentOutOfRangeException();
             }
             version = (Version) reader.ReadUInt16();
-            switch (version)
-            {
-                case Version.GZ:
-                    break;
-                case Version.TPP:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            Console.WriteLine($"TCVP Version: {version}");
             ushort locatorCount = reader.ReadUInt16();
+            Console.WriteLine($"Locator count: {locatorCount}");
             reader.ReadUInt32(); // something/12
 
             // Read locators
             for (int i = 0; i < locatorCount; i++)
             {
-                ILocatorTcvpGZ locator = new TcvpLocatorGZ();
-                locator.Read(reader);
-                Locators.Add(locator);
+                switch (version)
+                {
+                    case Version.GZ:
+                        ILocatorTcvp locatorGZ = new TcvpLocatorGZ();
+                        Locators.Add(locatorGZ);
+                        locatorGZ.Read(reader);
+                        Locators.Add(locatorGZ);
+                        break;
+                    case Version.TPP:
+                        ILocatorTcvp locatorTPP = new TcvpLocatorTPP();
+                        Locators.Add(locatorTPP);
+                        locatorTPP.Read(reader);
+                        Locators.Add(locatorTPP);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
 
         }
@@ -86,7 +93,7 @@ namespace TcvpTool
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
-                        ILocatorTcvpGZ newLocator = CreateLocator();
+                        ILocatorTcvp newLocator = CreateLocator();
                         newLocator.ReadXml(reader);
                         Locators.Add(newLocator);
                         reader.ReadEndElement();
@@ -107,7 +114,7 @@ namespace TcvpTool
             writer.WriteStartElement("tcvp");
             writer.WriteAttributeString("version", ((short)version).ToString());
 
-            foreach (ILocatorTcvpGZ locator in Locators)
+            foreach (ILocatorTcvp locator in Locators)
             {
                 writer.WriteStartElement("locator");
                 locator.WriteXml(writer);
@@ -116,9 +123,18 @@ namespace TcvpTool
             writer.WriteEndDocument();
         }
         
-        ILocatorTcvpGZ CreateLocator()
+        ILocatorTcvp CreateLocator()
         {
-            return new TcvpLocatorGZ();
+            switch (version)
+            {
+                case Version.GZ:
+                    return new TcvpLocatorGZ();
+                case Version.TPP:
+                    return new TcvpLocatorTPP();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            throw new ArgumentOutOfRangeException();
         }
 
         public XmlSchema GetSchema()

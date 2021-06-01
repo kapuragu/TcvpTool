@@ -4,17 +4,17 @@ using System.Xml.Schema;
 
 namespace TcvpTool
 {
-    public class TcvpLocatorGZ : ILocatorTcvp
+    public class TcvpLocatorTPP : ILocatorTcvp
     {
         public Vector3 Translation { get; set; }
-        public TcvpParamsGZ Params { get; set; }
+        public TcvpParamsTPP Params { get; set; }
 
         public void Read(BinaryReader reader)
         {
             Translation = new Vector3();
             Translation.Read(reader);
 
-            Params = new TcvpParamsGZ();
+            Params = new TcvpParamsTPP();
             Params.Read(reader);
         }
 
@@ -33,7 +33,7 @@ namespace TcvpTool
 
             reader.Read();
 
-            Params = new TcvpParamsGZ();
+            Params = new TcvpParamsTPP();
             Params.ReadXml(reader);
 
             reader.Read();

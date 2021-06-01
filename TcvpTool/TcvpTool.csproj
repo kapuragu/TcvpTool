@@ -44,11 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="ILocatorTcvpGZ.cs" />
+    <Compile Include="ILocatorTcvp.cs" />
     <Compile Include="TcvpFile.cs" />
+    <Compile Include="TcvpLocatorTPP.cs" />
     <Compile Include="TcvpLocatorGZ.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TcvpParamsTPP.cs" />
     <Compile Include="Vector3.cs" />
     <Compile Include="TcvpParamsGZ.cs" />
   </ItemGroup>

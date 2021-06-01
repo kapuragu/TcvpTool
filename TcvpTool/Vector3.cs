@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
@@ -17,6 +18,7 @@ namespace TcvpTool
             X = reader.ReadSingle();
             Y = reader.ReadSingle();
             Z = reader.ReadSingle();
+            Console.WriteLine($"Read Vector3 X: {X}, Y: {Y}, Z: {Z}");
         }
 
         public virtual void Write(BinaryWriter writer)
@@ -24,6 +26,7 @@ namespace TcvpTool
             writer.Write(X);
             writer.Write(Y);
             writer.Write(Z);
+            Console.WriteLine($"Write Vector3 X: {X}, Y: {Y}, Z: {Z}");
         }
 
         public virtual void ReadXml(XmlReader reader)
@@ -31,6 +34,7 @@ namespace TcvpTool
             X = Extensions.ParseFloatRoundtrip(reader["x"]);
             Y = Extensions.ParseFloatRoundtrip(reader["y"]);
             Z = Extensions.ParseFloatRoundtrip(reader["z"]);
+            Console.WriteLine($"Read XML Vector3 X: {X}, Y: {Y}, Z: {Z}");
         }
 
         public virtual void WriteXml(XmlWriter writer)
@@ -38,6 +42,7 @@ namespace TcvpTool
             writer.WriteAttributeString("x", X.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("y", Y.ToString(CultureInfo.InvariantCulture));
             writer.WriteAttributeString("z", Z.ToString(CultureInfo.InvariantCulture));
+            Console.WriteLine($"Write XML Vector3 X: {X}, Y: {Y}, Z: {Z}");
         }
 
         public XmlSchema GetSchema()
